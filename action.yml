@@ -1,0 +1,50 @@
+name: Ogoron Exec
+description: Install Ogoron and execute one or more explicit commands inside a repository.
+author: OgoronAI
+branding:
+  icon: terminal
+  color: gray-dark
+
+inputs:
+  commands:
+    description: Multiline shell commands to execute. Runs under bash with set -euo pipefail.
+    required: true
+  working-directory:
+    description: Repository directory where commands should run.
+    required: false
+    default: .
+  cli-version:
+    description: Ogoron CLI release version to download.
+    required: false
+    default: 5.2.0
+  download-url:
+    description: Explicit Linux bundle URL override.
+    required: false
+
+outputs:
+  ogoron-bin:
+    description: Absolute path to the downloaded Ogoron executable.
+    value: ${{ steps.install.outputs.ogoron-bin }}
+
+runs:
+  using: composite
+  steps:
+    - id: install
+      name: Install Ogoron
+      shell: bash
+      run: "${{ github.action_path }}/scripts/install-ogoron.sh"
+      env:
+        INPUT_CLI_VERSION: ${{ inputs.cli-version }}
+        INPUT_DOWNLOAD_URL: ${{ inputs.download-url }}
+
+    - id: exec
+      name: Run commands
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      run: "${{ github.action_path }}/scripts/run-commands.sh"
+      env:
+        OGORON_BIN: ${{ steps.install.outputs.ogoron-bin }}
+        INPUT_COMMANDS: ${{ inputs.commands }}
+        OGORON_PLAIN: "1"
+        NO_COLOR: "1"
+        CI: "1"
