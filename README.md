@@ -64,3 +64,14 @@ jobs:
 - The action adds the downloaded runtime directory to `PATH`.
 - Both `ogoron` and `ogoron-nuitka` are available during command execution.
 - Command failures fail the step, except where your own shell logic handles them.
+
+## Related actions
+
+- [`Ogoron Setup`](https://github.com/OgoronAI/ogoron-setup-action) to bootstrap a repository before regular CI usage
+- [`Ogoron Generate`](https://github.com/OgoronAI/ogoron-generate-action) for opinionated test artifact generation
+- [`Ogoron Run`](https://github.com/OgoronAI/ogoron-run-action) for opinionated test execution
+- [`Ogoron Heal`](https://github.com/OgoronAI/ogoron-heal-action) for opinionated recovery flows
+
+## Recommended flow
+
+Use `exec` when the higher-level actions are too narrow and you need direct control over Ogoron commands inside a workflow. Prefer `setup`, `generate`, `run`, and `heal` first, and fall back to `exec` only for custom orchestration.
