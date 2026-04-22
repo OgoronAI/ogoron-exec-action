@@ -49,7 +49,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Run Ogoron commands
-        uses: OgoronAI/ogoron-actions/exec@v1
+        uses: OgoronAI/ogoron-exec-action@v1
         env:
           OGORON_REPO_TOKEN: ${{ secrets.OGORON_REPO_TOKEN }}
           OGORON_LLM_API_KEY: ${{ secrets.OGORON_LLM_API_KEY }}
